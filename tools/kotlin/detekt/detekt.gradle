@@ -1,0 +1,25 @@
+apply plugin: 'io.gitlab.arturbosch.detekt'
+
+detekt {
+    version = "1.18.0-RC3"
+    input = files("$project.rootDir/app")
+    config = files("$project.rootDir/tools/kotlin/detekt/default-detekt-config.yml")
+    ignoreFailures = false
+    parallel = true
+    disableDefaultRuleSets = false
+    autoCorrect = true
+    reports {
+        html {
+            html.enabled = true
+            destination = file("${project.buildDir}/reports/detekt.html")
+        }
+        custom {
+            reportId = "CodeQualityReport"
+            destination = file("${project.buildDir}/reports/cqr.json")
+        }
+    }
+}
+
+dependencies {
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.18.0-RC3", files("$project.rootDir/tools/kotlin/detekt/cqr.jar") , "com.squareup.okhttp3:okhttp:4.9.1", "com.squareup.okhttp3:logging-interceptor:4.9.1")
+}

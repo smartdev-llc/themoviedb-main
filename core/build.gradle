@@ -1,0 +1,66 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.jakewharton.butterknife'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+
+    compileOptions {
+        sourceCompatibility rootProject.ext.sourceCompatibilityVersion
+        targetCompatibility rootProject.ext.targetCompatibilityVersion
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    //UI
+    api deps.sdp
+    api deps.ssp
+    api deps.supportAppCompat
+    api deps.supportTransition
+    api deps.butterknife
+    kapt deps.butterknifeCompiler
+    implementation deps.navigationFragmentKtx
+    //RX
+    api deps.rxAndroid
+    api deps.rxJava
+    api deps.rxKotlin
+    //DI
+    api deps.dagger2
+    api deps.dagger2android
+    api (deps.dagger2support)  {
+        exclude group: 'com.android.support'
+    }
+    kapt deps.dagger2compiler
+    kapt deps.dagger2processor
+
+    implementation deps.fragmentKtx
+    //room - paging
+    api deps.liveEvent
+    kapt deps.lifecycleCompiler
+    api deps.lifecycleViewmodel
+    api deps.lifecycleLivedata
+
+    //Kotlin
+    api deps.kotlinStdlib
+    api deps.kotlinReflect
+
+    api deps.timber
+}

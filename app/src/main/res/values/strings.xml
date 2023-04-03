@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">The Movie</string>
+    <string name="all_general_error">There\'s error</string>
+    <string name="item_movie_poster_image">Poster</string>
+    <string name="send_report_succeed_message">Send report succeed</string>
+    <string name="send_report_failed_message">Send report failed</string>
+    <string name="empty_movie">Empty movie</string>
+</resources>

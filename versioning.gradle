@@ -1,0 +1,159 @@
+// versionName = major.minor.patch-buildType.flavor-shortCommitId
+// versionCode -> auto increase each of major, minor or patch
+
+android {
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def versioningProperties = getVersioningProperties()
+            def keys = versioningProperties.keySet()
+
+            def baseVersion
+            def versionCode
+            if (keys.size() == 0) {
+                versionCode = 1
+                baseVersion = "1.0.0"
+                saveVersion("$baseVersion", versionCode)
+            } else {
+                baseVersion = versioningProperties["versionName"]
+                versionCode = versioningProperties["versionCode"]
+            }
+            def flavor = variant.productFlavors[0]
+            def environment = "$variant.buildType.name${flavor != null ? ".${flavor.name}" : ""}"
+            def shortCommitId = 'git rev-parse --verify --short HEAD'.execute().text.trim()
+            def versionName = "$baseVersion-${environment.substring(0, 3)}-$shortCommitId"
+            output.versionNameOverride = versionName
+            output.versionCodeOverride = versionCode
+        }
+    }
+}
+
+task increaseMajor() {
+    description("Increase major of version name to 1")
+    group("versioning")
+    doFirst {
+        increaseVersionNameMajor()
+    }
+    doLast {
+        println("Increase major of version name successfully")
+    }
+}
+
+task increaseMinor() {
+    description("Increase minor of version name to 1")
+    group("versioning")
+    doFirst {
+        increaseVersionNameMinor()
+    }
+    doLast {
+        println("Increase minor of version name successfully")
+    }
+}
+
+task increasePatch() {
+    description("Increase patch of version name to 1")
+    group("versioning")
+    doFirst {
+        increaseVersionNamePatch()
+    }
+    doLast {
+        println("Increase patch of version name successfully")
+    }
+}
+
+task increaseVersionCode() {
+    description("Increase version code to 1")
+    group("versioning")
+    doFirst {
+        increaseVersionCode()
+    }
+    doLast {
+        println("Increase version code successfully")
+    }
+}
+
+File getVersioningPropertiesFile() {
+    return rootProject.file('versioning.properties')
+}
+
+Properties getVersioningProperties() {
+    return getProperties(getVersioningPropertiesFile())
+}
+
+static Properties getProperties(file) {
+    if (!file.exists()) {
+        file.createNewFile()
+    }
+    def properties = new Properties()
+    def stream
+    try {
+        stream = new FileInputStream(file)
+        properties.load(stream)
+    } catch (FileNotFoundException ignore) {
+    } finally {
+        if (stream != null) stream.close()
+    }
+    return properties
+}
+
+void saveVersion(versionName, versionCode) {
+    def versioningProperties = getProperties(getVersioningPropertiesFile())
+    versioningProperties.setProperty("versionName", versionName)
+    versioningProperties.setProperty("versionCode", versionCode.toString())
+    def stream = new FileOutputStream(versioningPropertiesFile)
+    try {
+        versioningProperties.store(stream, null)
+    } finally {
+        stream.close()
+    }
+}
+
+void increaseVersionNameMajor(Integer increaseMount = 1) {
+    Properties versioningProperties = getProperties(getVersioningPropertiesFile())
+    def versionName = versioningProperties["versionName"] // major.minor.patch
+    def versionCode = versioningProperties["versionCode"]
+    def versionNameComponents = versionName.split("\\.")
+    Integer newMajor = Integer.valueOf(versionNameComponents[0]) + increaseMount
+    String minor = versionNameComponents[1]
+    String patch = versionNameComponents[2]
+    String newVersionName = "$newMajor.$minor.$patch"
+    println("Previous version name: $versionName")
+    println("New version name: $newVersionName")
+    saveVersion(newVersionName, versionCode)
+}
+
+void increaseVersionNameMinor(Integer increaseMount = 1) {
+    Properties versioningProperties = getProperties(getVersioningPropertiesFile())
+    def versionName = versioningProperties["versionName"] // major.minor.patch
+    def versionCode = versioningProperties["versionCode"]
+    String[] versionNameComponents = versionName.split("\\.")
+    String major = versionNameComponents[0]
+    String newMinor = Integer.valueOf(versionNameComponents[1]) + increaseMount
+    String patch = versionNameComponents[2]
+    String newVersionName = "$major.$newMinor.$patch"
+    println("Previous version name: $versionName")
+    println("New version name: $newVersionName")
+    saveVersion(newVersionName, versionCode)
+}
+
+void increaseVersionNamePatch(Integer increaseMount = 1) {
+    Properties versioningProperties = getProperties(getVersioningPropertiesFile())
+    def versionName = versioningProperties["versionName"] // major.minor.patch
+    def versionCode = versioningProperties["versionCode"]
+    String[] versionNameComponents = versionName.split("\\.")
+    String major = versionNameComponents[0]
+    String minor = versionNameComponents[1]
+    String newPatch = Integer.valueOf(versionNameComponents[2]) + increaseMount
+    String newVersionName = "$major.$minor.$newPatch"
+    println("Previous version name: $versionName")
+    println("New version name: $newVersionName")
+    saveVersion(newVersionName, versionCode)
+}
+
+void increaseVersionCode(Integer increaseMount = 1) {
+    Properties versioningProperties = getProperties(getVersioningPropertiesFile())
+    def versionName = versioningProperties["versionName"]
+    def versionCode = Integer.valueOf(versioningProperties["versionCode"]) + increaseMount
+    println("Previous version code: ${versioningProperties["versionCode"]}")
+    println("New version code: $versionCode")
+    saveVersion(versionName, versionCode)
+}

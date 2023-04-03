@@ -1,0 +1,23 @@
+apply plugin: 'checkstyle'
+
+checkstyle {
+    project.ext.checkstyleVersion = '8.20'
+    configFile = file("${project.rootDir}/tools/checkstyle/checkstyle.xml")
+}
+
+task checkstyle(type: Checkstyle) {
+    description 'Check code standard'
+    group 'verification'
+    configFile file("${project.rootDir}/tools/checkstyle/checkstyle.xml")
+    source fileTree('**/src/**/java')
+    include '**/*.java'
+    exclude '**/gen/**'
+    ignoreFailures = true
+    classpath = files()
+    showViolations = true
+    reports {
+        xml.enabled = false
+        html.enabled = true
+        html.destination = file("$project.buildDir/outputs/checkstyle/checkstyle-result.html")
+    }
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchWidthWrapHeight">
+
+    <io.github.justinlewis.app.ui.view.AspectRatioImageView
+        android:id="@+id/iv_poster"
+        app:aspectRatio="1.5"
+        app:aspectRatioEnabled="true"
+        style="@style/MatchWidthWrapHeight"
+        android:contentDescription="@string/item_movie_poster_image"/>
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_gravity="bottom"
+        android:layout_margin="@dimen/default_margin"
+        android:textColor="@android:color/white"
+        android:background="@color/all_loading_bg"
+        style="@style/MatchWidthWrapHeight"/>
+</FrameLayout>

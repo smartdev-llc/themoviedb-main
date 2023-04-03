@@ -1,0 +1,4 @@
+<resources>
+    <string name="network_error">ネットワークエラー</string>
+    <string name="default_error">エラー</string>
+</resources>

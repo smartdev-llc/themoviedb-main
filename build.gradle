@@ -1,0 +1,215 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext.androidGradlePluginVersion = "4.1.3"
+    ext.kotlinVersion = "1.5.20"
+    ext.butterknifeLatestReleaseVersion = "10.2.1"
+    ext.realmGradlePluginVersion = "10.7.1"
+    ext.googleServicesVersion = "4.3.5"
+    ext.firebaseCrashlyticsGradleVersion = "2.7.1"
+    ext.gradleLicensePluginVersion = "0.8.80"
+
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url "https://maven.fabric.io/public"
+        }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$androidGradlePluginVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "io.realm:realm-gradle-plugin:$realmGradlePluginVersion"
+        classpath "com.jakewharton:butterknife-gradle-plugin:$butterknifeLatestReleaseVersion"
+        classpath "com.google.gms:google-services:$googleServicesVersion"
+        classpath "com.google.firebase:firebase-crashlytics-gradle:$firebaseCrashlyticsGradleVersion"
+        classpath "com.jaredsburrows:gradle-license-plugin:$gradleLicensePluginVersion"
+    }
+}
+
+plugins {
+    id "io.gitlab.arturbosch.detekt" version "1.18.0-RC3"
+//    id "io.github.justinlewis.gradle.deputil" version "1.0.0"
+}
+
+allprojects {
+    repositories {
+//        NOTE: If use aar dependency in libs folder
+//        flatDir {
+//            dirs "libs"
+//        }
+        mavenCentral()
+        google()
+        maven {
+            url "https://maven.google.com/"
+        }
+        maven {
+            url "https://jitpack.io"
+        }
+    }
+}
+
+subprojects {
+    // apply tools for each project
+    apply from: "$project.rootDir/tools/kotlin/ktlint/ktlint.gradle"
+    apply from: "$project.rootDir/tools/kotlin/detekt/detekt.gradle"
+//    apply from: "$project.rootDir/tools/java/checkstyle/checkstyle.gradle"
+//    apply from: "$project.rootDir/tools/java/pmd/pmd.gradle"
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    appVersionCode = 1
+    appVersionName = '1.0.0'
+    kotlinVersion = "1.5.20"
+
+    sdpVersion = "1.0.6"
+    multidexVersion = "2.0.1"
+    appCompatVersion = "1.2.0"
+    transitionVersion = "1.4.0"
+    designVersion = "1.3.0"
+    recyclerViewVersion = "1.1.0"
+    constraintLayoutVersion = "2.0.4"
+    cardViewVersion = "1.0.0"
+    coreVersion = "1.5.0-alpha05"
+    glideVersion = "4.12.0"
+    daggerVersion = "2.38.1"
+    butterknifeLatestReleaseVersion = "10.2.3"
+    easyPermissionVersion = "3.0.0"
+    rxAndroidVersion = "2.1.1"
+    rxJavaVersion = "2.2.21"
+    rxKotlinVersion = "2.4.0"
+    rxRelayVersion = "2.1.1"
+    gsonVersion = "2.8.6"
+    retrofitVersion = "2.9.0"
+    okhttp3Version = "4.9.1"
+    okhttp3logingVersion = "4.9.1"
+    okioVersion = "2.10.0"
+    krealmextensionsVersion = "2.5.0"
+    firebaseBomVersion = "26.8.0"
+    fcmJobdispatcherVersion = "0.8.6"
+    timberVersion = "4.7.1"
+    leakcanaryDebugVersion = "2.7"
+    minSdkVersion = 26
+    targetSdkVersion = 30
+    compileSdkVersion = 30
+    liveEventVersion = "1.3.0"
+
+    lifecycleVersion = "2.4.0-alpha02"
+    roomVersion = "2.3.0"
+    pagingVersion = "3.0.0"
+    navigationVersion = "2.4.0-alpha03"
+    sspVersion = "1.0.6"
+    androidxLegacyVersion = "1.0.0"
+    facebookLoginVersion = "8.1.0"
+    zaloSdkVersion = "2.6.0329"
+    circleIndicatorVersion = "2.1.6"
+    searchview = "1.1.4"
+    acraVersion = "5.8.4"
+    safestateVersion = "1.0.1"
+    rxWorkerVersion = "2.5.0"
+    ebillingVersion = "1.0.0"
+    billingVersion = "4.0.0"
+
+    sourceCompatibilityVersion = JavaVersion.VERSION_1_8
+    targetCompatibilityVersion = JavaVersion.VERSION_1_8
+}
+
+ext.deps = [
+        androidxLegacy           : "androidx.legacy:legacy-support-v4:$androidxLegacyVersion",
+        multidex                 : "com.android.support:multidex:$multidexVersion",
+        supportAppCompat         : "androidx.appcompat:appcompat:$appCompatVersion",
+        supportTransition        : "androidx.transition:transition:$transitionVersion",
+        supportDesignCompat      : "com.google.android.material:material:$designVersion",
+        supportRecyclerviewCompat: "androidx.recyclerview:recyclerview:$recyclerViewVersion",
+        constrainLayout          : "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion",
+        supportCardView          : "androidx.cardview:cardview:$cardViewVersion",
+        coreKtx                  : "androidx.core:core-ktx:$coreVersion",
+        glide                    : "com.github.bumptech.glide:glide:$glideVersion",
+        circleIndicator          : "me.relex:circleindicator:$circleIndicatorVersion",
+        searchview          : "com.paulrybitskyi.persistentsearchview:persistentsearchview:$searchview",
+        //For binding and injection
+        liveEvent                : "com.github.hadilq:live-event:$liveEventVersion",
+        dagger2                  : "com.google.dagger:dagger:$daggerVersion",
+        dagger2android           : "com.google.dagger:dagger-android:$daggerVersion",
+        dagger2support           : "com.google.dagger:dagger-android-support:$daggerVersion",
+        dagger2compiler          : "com.google.dagger:dagger-compiler:$daggerVersion",
+        dagger2processor         : "com.google.dagger:dagger-android-processor:$daggerVersion",
+        butterknife              : "com.jakewharton:butterknife:$butterknifeLatestReleaseVersion",
+        butterknifeCompiler      : "com.jakewharton:butterknife-compiler:$butterknifeLatestReleaseVersion",
+
+        //room - paging
+        roomRuntime              : "androidx.room:room-runtime:$roomVersion",
+        roomCommon               : "androidx.room:room-common:$roomVersion",
+        roomRxJava2              : "androidx.room:room-rxjava2:$roomVersion",
+        roomCompiler             : "androidx.room:room-compiler:$roomVersion",
+        lifecycleViewmodel       : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion",
+        lifecycleLivedata        : "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion",
+        lifecycleSavedstate      : "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion",
+        lifecycleCompiler        : "androidx.lifecycle:lifecycle-compiler:$lifecycleVersion",
+        pagingRuntime            : "androidx.paging:paging-runtime:$pagingVersion",
+        pagingRxJava2            : "android.arch.paging:rxjava2:$pagingVersion",
+        pagingRxRuntime          : "androidx.paging:paging-runtime:$pagingVersion",
+        fragmentKtx              : "androidx.fragment:fragment-ktx:1.2.5",
+
+        //logic and data
+        easypermissions          : "pub.devrel:easypermissions:$easyPermissionVersion",
+        rxAndroid                : "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion",
+        rxJava                   : "io.reactivex.rxjava2:rxjava:$rxJavaVersion",
+        rxKotlin                 : "io.reactivex.rxjava2:rxkotlin:$rxKotlinVersion",
+        rxRelay                  : "com.jakewharton.rxrelay2:rxrelay:$rxRelayVersion",
+        gson                     : "com.google.code.gson:gson:$gsonVersion",
+        retrofit                 : "com.squareup.retrofit2:retrofit:$retrofitVersion",
+        retrofitRxAdapter        : "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion",
+        retrofitGson             : "com.squareup.retrofit2:converter-gson:$retrofitVersion",
+        okhttp3                  : "com.squareup.okhttp3:okhttp:$okhttp3Version",
+        okhttp3loging            : "com.squareup.okhttp3:logging-interceptor:$okhttp3logingVersion",
+        okio                     : "com.squareup.okio:okio:$okioVersion",
+        kotlinRealmExt           : "com.github.vicpinm:krealmextensions:$krealmextensionsVersion",
+        // Runtime lib
+        kotlinStdlib             : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion",
+        kotlinReflect            : "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
+        // Google
+        firebaseBom              : "com.google.firebase:firebase-bom:$firebaseBomVersion",
+        fcm                      : "com.google.firebase:firebase-messaging-ktx",
+        f_crashlytics            : "com.google.firebase:firebase-crashlytics-ktx",
+        // logging
+        timber                   : "com.jakewharton.timber:timber:$timberVersion",
+        leakcanaryDebug          : "com.squareup.leakcanary:leakcanary-android:$leakcanaryDebugVersion",
+        // Lifecycle
+        lifecycleExtension       : "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion",
+        lifecycleViewModelKtx    : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion",
+        lifecycleLiveDataKtx     : "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion",
+        lifecycleSavedState      : "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion",
+        // Navigation
+        navigationFragmentKtx    : "androidx.navigation:navigation-fragment-ktx:$navigationVersion",
+        navigationUiKtx          : "androidx.navigation:navigation-ui-ktx:$navigationVersion",
+        navigationSafeArgs       : "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion",
+        // Scale size unit
+        sdp                      : "com.intuit.sdp:sdp-android:$sdpVersion",
+        ssp                      : "com.intuit.ssp:ssp-android:$sspVersion",
+        // Social
+        facebookLogin            : "com.facebook.android:facebook-login:$facebookLoginVersion",
+        // ACRA
+        acraCore                 : "ch.acra:acra-core:$acraVersion",
+        acraDialog               : "ch.acra:acra-dialog:$acraVersion",
+        acraHttp                 : "ch.acra:acra-http:$acraVersion",
+        acraMail                 : "ch.acra:acra-mail:$acraVersion",
+        acraScheduler            : "ch.acra:acra-advanced-scheduler:$acraVersion",
+
+        // State handle
+        safestate                : "io.github.justin-lewis:safestate:$safestateVersion",
+
+        // Billing
+        ebilling                 : "io.github.justinlewis:ebilling:$ebillingVersion",
+        billingClient            : "com.android.billingclient:billing:$billingVersion",
+
+        //rx worker
+        rxWorker                 : "androidx.work:work-rxjava2:$rxWorkerVersion"
+]
